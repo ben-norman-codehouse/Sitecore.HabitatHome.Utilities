@@ -51,6 +51,8 @@ $loginSession = $null
 
 Import-Module (Join-Path $assets.sharedUtilitiesRoot "assets\modules\SharedInstallationUtilities\SharedInstallationUtilities.psm1") -Force
 
+Import-Module SqlServer
+
 #Ensure the Correct SIF Version is Imported
 Import-SitecoreInstallFramework -version $assets.installerVersion
 
@@ -202,7 +204,7 @@ Function Install-Modules {
         SitecoreAdminPassword           = $sitecore.adminPassword
     }
     Push-Location $sharedResourcePath
-    Install-SitecoreConfiguration @params
+    Install-SitecoreConfiguration @params *>&1 | Tee-Object $LogFile -Append
     Pop-Location
 }
 
